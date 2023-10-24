@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>第七史诗计算器</title>
+</head>
+<body>
+    <label>我方一速速度</label>
+    <input type="number" id="我方一速速度"><br>
+    <label>敌方速攻值</label>
+    <input type="number" id="敌方速攻值" placeholder="省略百分比">
+    <p>敌方速度:<span id="敌方速度"></span></p>
+
+    <script>
+        let 我方一速速度 = document.getElementById("我方一速速度")
+        let 敌方速攻值 = document.getElementById("敌方速攻值")
+        let 敌方速度 = document.getElementById("敌方速度")
+
+        我方一速速度.addEventListener("input", 速度计算);
+        敌方速攻值.addEventListener("input", 速度计算);
+
+        function 速度计算() {
+            let speed=parseInt(我方一速速度.value)
+            let enemy_speed_value=parseInt(敌方速攻值.value)
+            let enemy_speed=speed*enemy_speed_value/100
+            let max_enemy_speed=Math.floor(enemy_speed*1.05)
+            let min_enemy_speed=Math.ceil(enemy_speed/1.05)
+            敌方速度.textContent = min_enemy_speed+'~'+max_enemy_speed
+        }
+    </script>
+</body>
+</html>
