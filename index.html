@@ -1,32 +1,136 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>第七史诗计算器</title>
 </head>
+
 <body>
-    <label>我方一速速度</label>
-    <input type="number" id="我方一速速度"><br>
-    <label>敌方速攻值</label>
-    <input type="number" id="敌方速攻值" placeholder="省略百分比">
-    <p>敌方速度:<span id="敌方速度"></span></p>
+    <div id="速度计算区">
+        <label for="">英雄1速度</label>
+        <input type="number" id="英雄1速度">
+        <label for="">速攻条</label>
+        <input type="number" id="英雄1速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="英雄1速攻条增减"><br>
+
+        <label for="">英雄2速度</label>
+        <input type="number" id="英雄2速度">
+        <label for="">速攻条</label>
+        <input type="number" id="英雄2速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="英雄2速攻条增减"><br>
+
+        <label for="">英雄3速度</label>
+        <input type="number" id="英雄3速度">
+        <label for="">速攻条</label>
+        <input type="number" id="英雄3速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="英雄3速攻条增减"><br>
+
+        <label for="">英雄4速度</label>
+        <input type="number" id="英雄4速度">
+        <label for="">速攻条</label>
+        <input type="number" id="英雄4速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="英雄4速攻条增减"><br><br>
+
+
+        <label for="">敌人1速攻条</label>
+        <input type="number" id="敌人1速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="敌人1速攻条增减"><br>
+
+        <label for="">敌人2速攻条</label>
+        <input type="number" id="敌人2速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="敌人2速攻条增减"><br>
+
+        <label for="">敌人3速攻条</label>
+        <input type="number" id="敌人3速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="敌人3速攻条增减"><br>
+
+        <label for="">敌人4速攻条</label>
+        <input type="number" id="敌人4速攻条">
+        <label for="">速攻条增减</label>
+        <input type="number" id="敌人4速攻条增减"><br>
+
+        <p>速度计算结果：</p>
+        <p id="敌人1速度"></p>
+        <p id="敌人2速度"></p>
+        <p id="敌人3速度"></p>
+        <p id="敌人4速度"></p>
+    </div>
 
     <script>
-        let 我方一速速度 = document.getElementById("我方一速速度")
-        let 敌方速攻值 = document.getElementById("敌方速攻值")
-        let 敌方速度 = document.getElementById("敌方速度")
+        var 速度计算区 = document.querySelector("#速度计算区")
+        var 敌人1速度 = document.querySelector("#敌人1速度")
+        var 敌人2速度 = document.querySelector("#敌人2速度")
+        var 敌人3速度 = document.querySelector("#敌人3速度")
+        var 敌人4速度 = document.querySelector("#敌人4速度")
 
-        我方一速速度.addEventListener("input", 速度计算);
-        敌方速攻值.addEventListener("input", 速度计算);
+        var inputs = 速度计算区.querySelectorAll("input")
+        inputs.forEach(function (e) {
+            e.addEventListener("input", 速度计算);
+        });
 
         function 速度计算() {
-            let speed=parseInt(我方一速速度.value)
-            let enemy_speed_value=parseInt(敌方速攻值.value)
-            let enemy_speed=speed*enemy_speed_value/100
-            let max_enemy_speed=Math.floor(enemy_speed*1.05)
-            let min_enemy_speed=Math.ceil(enemy_speed/1.05)
-            敌方速度.textContent = min_enemy_speed+'~'+max_enemy_speed
+            let 英雄1速度 = document.getElementById("英雄1速度").value
+            let 英雄1速攻条 = document.getElementById("英雄1速攻条").value
+            let 英雄1速攻条增减 = document.getElementById("英雄1速攻条增减").value
+
+            let 英雄2速度 = document.getElementById("英雄2速度").value
+            let 英雄2速攻条 = document.getElementById("英雄2速攻条").value
+            let 英雄2速攻条增减 = document.getElementById("英雄2速攻条增减").value
+
+            let 英雄3速度 = document.getElementById("英雄3速度").value
+            let 英雄3速攻条 = document.getElementById("英雄3速攻条").value
+            let 英雄3速攻条增减 = document.getElementById("英雄3速攻条增减").value
+
+            let 英雄4速度 = document.getElementById("英雄4速度").value
+            let 英雄4速攻条 = document.getElementById("英雄4速攻条").value
+            let 英雄4速攻条增减 = document.getElementById("英雄4速攻条增减").value
+
+
+            let 敌人1速攻条 = document.getElementById("敌人1速攻条").value
+            let 敌人1速攻条增减 = document.getElementById("敌人1速攻条增减").value
+            let 敌人2速攻条 = document.getElementById("敌人2速攻条").value
+            let 敌人2速攻条增减 = document.getElementById("敌人2速攻条增减").value
+            let 敌人3速攻条 = document.getElementById("敌人3速攻条").value
+            let 敌人3速攻条增减 = document.getElementById("敌人3速攻条增减").value
+            let 敌人4速攻条 = document.getElementById("敌人4速攻条").value
+            let 敌人4速攻条增减 = document.getElementById("敌人4速攻条增减").value
+
+            function 计算敌方速度区间(x1, x2, x3, y1, y2) {
+                if (x1) {
+                    let 最小速度 = Math.ceil((y1 - y2 - 5) / (x2 - x3) * x1)
+                    let 最大速度 = Math.floor((y1 - y2) / (x2 - x3 - 5) * x1)
+                    return [最小速度, 最大速度]
+                } else {
+                    return [0, 999]
+                }
+            }
+            function 合并速度区间(a1, a2, a3, b1, b2, b3, c1, c2, c3, d1, d2, d3, x1, x2) {
+                let 速度区间1 = 计算敌方速度区间(a1, a2, a3, x1, x2)
+                let 速度区间2 = 计算敌方速度区间(b1, b2, b3, x1, x2)
+                let 速度区间3 = 计算敌方速度区间(c1, c2, c3, x1, x2)
+                let 速度区间4 = 计算敌方速度区间(d1, d2, d3, x1, x2)
+                return [Math.max(速度区间1[0], 速度区间2[0], 速度区间3[0], 速度区间4[0]), Math.min(速度区间1[1], 速度区间2[1], 速度区间3[1], 速度区间4[1])]
+            }
+
+            let 敌人1速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人1速攻条, 敌人1速攻条增减)
+            let 敌人2速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人2速攻条, 敌人2速攻条增减)
+            let 敌人3速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人3速攻条, 敌人3速攻条增减)
+            let 敌人4速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人4速攻条, 敌人4速攻条增减)
+
+            敌人1速度.textContent = "敌人1速度：" + 敌人1速度区间[0] + "~" + 敌人1速度区间[1]
+            敌人2速度.textContent = "敌人2速度：" + 敌人2速度区间[0] + "~" + 敌人2速度区间[1]
+            敌人3速度.textContent = "敌人3速度：" + 敌人3速度区间[0] + "~" + 敌人3速度区间[1]
+            敌人4速度.textContent = "敌人4速度：" + 敌人4速度区间[0] + "~" + 敌人4速度区间[1]
         }
     </script>
 </body>
+
 </html>
