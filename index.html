@@ -7,48 +7,60 @@
 </head>
 <style>
     /* 标题样式 */
-h1 {
-    font-family: 'Arial', sans-serif; /* 使用 Arial 字体或其他 sans-serif 字体 */
-    font-size: 2em; /* 设置字体大小 */
-    color: #3498db; /* 设置颜色 */
-    text-align: center; /* 居中对齐 */
-    padding: 20px; /* 添加内边距 */
-    background-color: #ecf0f1; /* 设置背景色 */
-    border-radius: 10px; /* 添加圆角 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
-}
+    h1 {
+        font-family: 'Arial', sans-serif;
+        /* 使用 Arial 字体或其他 sans-serif 字体 */
+        font-size: 2em;
+        /* 设置字体大小 */
+        color: #3498db;
+        /* 设置颜色 */
+        text-align: center;
+        /* 居中对齐 */
+        padding: 20px;
+        /* 添加内边距 */
+        background-color: #ecf0f1;
+        /* 设置背景色 */
+        border-radius: 10px;
+        /* 添加圆角 */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        /* 添加阴影效果 */
+    }
 
-/* 鼠标悬停时的样式 */
-h1:hover {
-    background-color: #2980b9; /* 鼠标悬停时改变背景色 */
-    color: #fff; /* 鼠标悬停时改变文字颜色 */
-}
+    /* 鼠标悬停时的样式 */
+    h1:hover {
+        background-color: #2980b9;
+        /* 鼠标悬停时改变背景色 */
+        color: #fff;
+        /* 鼠标悬停时改变文字颜色 */
+    }
 
-body{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.栏目 {
-    padding: 20px;
-    background-color: #3498db;
-    width: 60%;
-    color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-}
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .栏目 {
+        padding: 20px;
+        background-color: #3498db;
+        width: 60%;
+        color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+    }
 
     .内部div {
         display: inline-block;
         text-align: center;
     }
-    .栏目>div{
+
+    .栏目>div {
         display: flex;
         justify-content: center;
     }
 
-    #工具栏 {  
+    #工具栏 {
         text-align: center;
         position: fixed;
         bottom: 0;
@@ -58,7 +70,8 @@ body{
         color: #fff;
         padding: 10px;
     }
-    #清空储存的数据{
+
+    #清空储存的数据 {
         margin-right: 5%;
     }
 </style>
@@ -82,6 +95,22 @@ body{
         let 英雄字典字符串 = localStorage.getItem("英雄字典字符串")
         英雄字典 = 英雄字典字符串 ? JSON.parse(英雄字典字符串) : {}
         输入框数据加载()
+
+        清空.addEventListener("click", () => {
+            var inputs = document.querySelectorAll("input")
+            inputs.forEach(function (e) {
+                e.value = ""
+            });
+            速度计算()
+        })
+        复制.addEventListener("click", () => {
+            let str = (敌人1速攻条.value ? 敌人1速度.textContent : "") + (敌人2速攻条.value ? "\n" + 敌人2速度.textContent : "") + (敌人3速攻条.value ? "\n" + 敌人3速度.textContent : "") + (敌人4速攻条.value ? "\n" + 敌人4速度.textContent : "")
+            navigator.clipboard.writeText(str)
+        })
+        清空储存的数据.addEventListener("click", () => {
+            英雄字典 = {}
+            localStorage.setItem("英雄字典字符串", JSON.stringify(英雄字典))
+        })
 
         function 输入框数据加载() {
             while (英雄列表.firstChild) {
@@ -201,8 +230,8 @@ body{
             英雄改变事件() {
                 let name = this.名字_input.value
                 if (name) {
-                    if(英雄字典[name]){
-                        this.速度_input.value=英雄字典[name]
+                    if (英雄字典[name]) {
+                        this.速度_input.value = 英雄字典[name]
                     }
                 }
             }
@@ -287,21 +316,6 @@ body{
             敌人3速度.textContent = 敌人3速度区间[0] + "~" + 敌人3速度区间[1]
             敌人4速度.textContent = 敌人4速度区间[0] + "~" + 敌人4速度区间[1]
         }
-
-
-        let 清空 = document.querySelector("#清空")
-        清空.addEventListener("click", () => {
-            var inputs = document.querySelectorAll("input")
-            inputs.forEach(function (e) {
-                e.value = ""
-            });
-            速度计算()
-        })
-        let 复制 = document.querySelector("#复制")
-        复制.addEventListener("click", () => {
-            let str = (敌人1速攻条.value ? 敌人1速度.textContent : "") + (敌人2速攻条.value ? "\n" + 敌人2速度.textContent : "") + (敌人3速攻条.value ? "\n" + 敌人3速度.textContent : "") + (敌人4速攻条.value ? "\n" + 敌人4速度.textContent : "")
-            navigator.clipboard.writeText(str)
-        })
     </script>
 
 </body>
