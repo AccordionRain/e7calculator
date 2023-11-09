@@ -5,75 +5,230 @@
     <meta charset="UTF-8">
     <title>第七史诗计算器</title>
 </head>
+<style>
+    /* 标题样式 */
+h1 {
+    font-family: 'Arial', sans-serif; /* 使用 Arial 字体或其他 sans-serif 字体 */
+    font-size: 2em; /* 设置字体大小 */
+    color: #3498db; /* 设置颜色 */
+    text-align: center; /* 居中对齐 */
+    padding: 20px; /* 添加内边距 */
+    background-color: #ecf0f1; /* 设置背景色 */
+    border-radius: 10px; /* 添加圆角 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+}
+
+/* 鼠标悬停时的样式 */
+h1:hover {
+    background-color: #2980b9; /* 鼠标悬停时改变背景色 */
+    color: #fff; /* 鼠标悬停时改变文字颜色 */
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.栏目 {
+    padding: 20px;
+    background-color: #3498db;
+    width: 60%;
+    color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
+    .内部div {
+        display: inline-block;
+        text-align: center;
+    }
+    .栏目>div{
+        display: flex;
+        justify-content: center;
+    }
+
+    #工具栏 {  
+        text-align: center;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        padding: 10px;
+    }
+    #清空储存的数据{
+        margin-right: 5%;
+    }
+</style>
 
 <body>
     <a href="防御计算.html">点击前往防御计算器</a>
-    <h1>速度计算</h1>
-    <div id="速度计算区">
-        <label for="">英雄1速度</label>
-        <input type="number" id="英雄1速度">
-        <label for="">速攻条</label>
-        <input type="number" id="英雄1速攻条" placeholder="省略%">
-        <label for="">速攻条增减</label>
-        <input type="number" id="英雄1速攻条增减" placeholder="省略%"><br>
+    <h1>第七史诗速度计算器</h1>
+    <datalist id="英雄列表">
+    </datalist>
+    <div id="我方栏" class="栏目"></div>
+    <br>
+    <div id="敌方栏" class="栏目"></div>
 
-        <label for="">英雄2速度</label>
-        <input type="number" id="英雄2速度">
-        <label for="">速攻条</label>
-        <input type="number" id="英雄2速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="英雄2速攻条增减"><br>
-
-        <label for="">英雄3速度</label>
-        <input type="number" id="英雄3速度">
-        <label for="">速攻条</label>
-        <input type="number" id="英雄3速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="英雄3速攻条增减"><br>
-
-        <label for="">英雄4速度</label>
-        <input type="number" id="英雄4速度">
-        <label for="">速攻条</label>
-        <input type="number" id="英雄4速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="英雄4速攻条增减"><br><br>
-
-
-        <label for="">敌人1速攻条</label>
-        <input type="number" id="敌人1速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="敌人1速攻条增减"><br>
-
-        <label for="">敌人2速攻条</label>
-        <input type="number" id="敌人2速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="敌人2速攻条增减"><br>
-
-        <label for="">敌人3速攻条</label>
-        <input type="number" id="敌人3速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="敌人3速攻条增减"><br>
-
-        <label for="">敌人4速攻条</label>
-        <input type="number" id="敌人4速攻条">
-        <label for="">速攻条增减</label>
-        <input type="number" id="敌人4速攻条增减"><br>
-
-        <p>速度计算结果：</p>
-        <p id="敌人1速度"></p>
-        <p id="敌人2速度"></p>
-        <p id="敌人3速度"></p>
-        <p id="敌人4速度"></p>
+    <div id="工具栏">
+        <button id="清空储存的数据">清空储存的数据</button>
+        <button id="清空">清空</button>
+        <button id="复制">复制</button>
     </div>
-
     <script>
-        var 速度计算区 = document.querySelector("#速度计算区")
-        var 敌人1速度 = document.querySelector("#敌人1速度")
-        var 敌人2速度 = document.querySelector("#敌人2速度")
-        var 敌人3速度 = document.querySelector("#敌人3速度")
-        var 敌人4速度 = document.querySelector("#敌人4速度")
+        let 英雄字典 = {}
+        let 英雄字典字符串 = localStorage.getItem("英雄字典字符串")
+        英雄字典 = 英雄字典字符串 ? JSON.parse(英雄字典字符串) : {}
+        输入框数据加载()
 
-        var inputs = 速度计算区.querySelectorAll("input")
+        function 输入框数据加载() {
+            while (英雄列表.firstChild) {
+                英雄列表.removeChild(英雄列表.firstChild);
+            }
+            for (var key in 英雄字典) {
+                var option = document.createElement("option");
+                option.value = key;
+                英雄列表.appendChild(option);
+            }
+        }
+        class Input {
+            constructor(id, parent = document.body) {
+                this.id = id
+                this.parent = parent
+
+                this.container = document.createElement('div')
+                this.container.classList.add("项")
+                this.br = document.createElement('br')
+
+                this.速攻条_div = document.createElement('div')
+                this.速攻条_div.classList.add("内部div")
+
+                this.速攻条_p = document.createElement('p')
+                this.速攻条_p.textContent = "速攻条"
+
+                this.速攻条_input = document.createElement('input')
+                this.速攻条_input.id = id + "速攻条"
+
+                this.速攻条_div.appendChild(this.速攻条_p)
+                this.速攻条_div.appendChild(this.速攻条_input)
+
+
+                this.增减的速攻条_div = document.createElement('div')
+                this.增减的速攻条_div.classList.add("内部div")
+
+                this.增减的速攻条_p = document.createElement('p')
+                this.增减的速攻条_p.textContent = "增减的速攻条"
+
+                this.增减的速攻条_input = document.createElement('input')
+                this.增减的速攻条_input.id = id + "增减的速攻条"
+
+                this.增减的速攻条_div.appendChild(this.增减的速攻条_p)
+                this.增减的速攻条_div.appendChild(this.增减的速攻条_input)
+
+                this.parent.appendChild(this.container)
+            }
+        }
+        class 敌人 extends Input {
+            constructor(id, parent = 敌方栏) {
+                super(id, parent)
+
+                this.速攻条_p.textContent = id + "速攻条"
+
+                this.速度_div = document.createElement('div')
+                this.速度_div.classList.add("内部div")
+
+                this.速度_p = document.createElement('p')
+                this.速度_p.textContent = "速度"
+
+                this.速度_p1 = document.createElement('p')
+                this.速度_p1.id = id + "速度"
+
+                this.速度_div.appendChild(this.速度_p)
+                this.速度_div.appendChild(this.速度_p1)
+
+                this.速度_p.textContent = "速度"
+                this.速度_p1.textContent = "0"
+
+                this.container.appendChild(this.速攻条_div)
+                this.container.appendChild(this.增减的速攻条_div)
+                this.container.appendChild(this.速度_div)
+            }
+        }
+        class 英雄 extends Input {
+            constructor(id, parent = 我方栏) {
+                super(id, parent)
+
+                this.名字_div = document.createElement('div')
+                this.名字_div.classList.add("内部div")
+
+                this.名字_p = document.createElement('p')
+                this.名字_p.textContent = "名字"
+
+                this.名字_input = document.createElement('input')
+                this.名字_input.id = id + "名字"
+                this.名字_input.setAttribute("list", "英雄列表");
+
+                this.名字_div.appendChild(this.名字_p)
+                this.名字_div.appendChild(this.名字_input)
+
+                this.名字_p.textContent = id + "名字"
+
+
+                this.速度_div = document.createElement('div')
+                this.速度_div.classList.add("内部div")
+
+                this.速度_p = document.createElement('p')
+                this.速度_p.textContent = "速度"
+
+                this.速度_input = document.createElement('input')
+                this.速度_input.id = id + "速度"
+
+                this.速度_div.appendChild(this.速度_p)
+                this.速度_div.appendChild(this.速度_input)
+
+                this.速度_p.textContent = "速度"
+
+                this.container.appendChild(this.名字_div)
+                this.container.appendChild(this.速度_div)
+                this.container.appendChild(this.速攻条_div)
+                this.container.appendChild(this.增减的速攻条_div)
+
+                this.名字_input.addEventListener("input", this.英雄改变事件.bind(this))
+                this.速度_input.addEventListener("change", this.速度改变事件.bind(this))
+            }
+            英雄改变事件() {
+                let name = this.名字_input.value
+                if (name) {
+                    if(英雄字典[name]){
+                        this.速度_input.value=英雄字典[name]
+                    }
+                }
+            }
+            速度改变事件() {
+                let name = this.名字_input.value
+                let speed = this.速度_input.value
+                if (name && speed) {
+                    if (英雄字典[name] !== speed) {
+                        英雄字典[name] = speed
+                        localStorage.setItem("英雄字典字符串", JSON.stringify(英雄字典))
+                        输入框数据加载()
+                    }
+                }
+            }
+        }
+        let a1 = new 英雄('英雄1')
+        let a2 = new 英雄('英雄2')
+        let a3 = new 英雄('英雄3')
+        let a4 = new 英雄('英雄4')
+        let b1 = new 敌人('敌人1')
+        let b2 = new 敌人('敌人2')
+        let b3 = new 敌人('敌人3')
+        let b4 = new 敌人('敌人4')
+
+
+        var inputs = document.querySelectorAll("input")
         inputs.forEach(function (e) {
             e.addEventListener("input", 速度计算);
         });
@@ -81,29 +236,29 @@
         function 速度计算() {
             let 英雄1速度 = document.getElementById("英雄1速度").value
             let 英雄1速攻条 = document.getElementById("英雄1速攻条").value
-            let 英雄1速攻条增减 = document.getElementById("英雄1速攻条增减").value
+            let 英雄1增减的速攻条 = document.getElementById("英雄1增减的速攻条").value
 
             let 英雄2速度 = document.getElementById("英雄2速度").value
             let 英雄2速攻条 = document.getElementById("英雄2速攻条").value
-            let 英雄2速攻条增减 = document.getElementById("英雄2速攻条增减").value
+            let 英雄2增减的速攻条 = document.getElementById("英雄2增减的速攻条").value
 
             let 英雄3速度 = document.getElementById("英雄3速度").value
             let 英雄3速攻条 = document.getElementById("英雄3速攻条").value
-            let 英雄3速攻条增减 = document.getElementById("英雄3速攻条增减").value
+            let 英雄3增减的速攻条 = document.getElementById("英雄3增减的速攻条").value
 
             let 英雄4速度 = document.getElementById("英雄4速度").value
             let 英雄4速攻条 = document.getElementById("英雄4速攻条").value
-            let 英雄4速攻条增减 = document.getElementById("英雄4速攻条增减").value
+            let 英雄4增减的速攻条 = document.getElementById("英雄4增减的速攻条").value
 
 
             let 敌人1速攻条 = document.getElementById("敌人1速攻条").value
-            let 敌人1速攻条增减 = document.getElementById("敌人1速攻条增减").value
+            let 敌人1增减的速攻条 = document.getElementById("敌人1增减的速攻条").value
             let 敌人2速攻条 = document.getElementById("敌人2速攻条").value
-            let 敌人2速攻条增减 = document.getElementById("敌人2速攻条增减").value
+            let 敌人2增减的速攻条 = document.getElementById("敌人2增减的速攻条").value
             let 敌人3速攻条 = document.getElementById("敌人3速攻条").value
-            let 敌人3速攻条增减 = document.getElementById("敌人3速攻条增减").value
+            let 敌人3增减的速攻条 = document.getElementById("敌人3增减的速攻条").value
             let 敌人4速攻条 = document.getElementById("敌人4速攻条").value
-            let 敌人4速攻条增减 = document.getElementById("敌人4速攻条增减").value
+            let 敌人4增减的速攻条 = document.getElementById("敌人4增减的速攻条").value
 
             function 计算敌方速度区间(x1, x2, x3, y1, y2) {
                 if (x1) {
@@ -122,17 +277,33 @@
                 return [Math.max(速度区间1[0], 速度区间2[0], 速度区间3[0], 速度区间4[0]), Math.min(速度区间1[1], 速度区间2[1], 速度区间3[1], 速度区间4[1])]
             }
 
-            let 敌人1速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人1速攻条, 敌人1速攻条增减)
-            let 敌人2速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人2速攻条, 敌人2速攻条增减)
-            let 敌人3速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人3速攻条, 敌人3速攻条增减)
-            let 敌人4速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1速攻条增减, 英雄2速度, 英雄2速攻条, 英雄2速攻条增减, 英雄3速度, 英雄3速攻条, 英雄3速攻条增减, 英雄4速度, 英雄4速攻条, 英雄4速攻条增减, 敌人4速攻条, 敌人4速攻条增减)
+            let 敌人1速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1增减的速攻条, 英雄2速度, 英雄2速攻条, 英雄2增减的速攻条, 英雄3速度, 英雄3速攻条, 英雄3增减的速攻条, 英雄4速度, 英雄4速攻条, 英雄4增减的速攻条, 敌人1速攻条, 敌人1增减的速攻条)
+            let 敌人2速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1增减的速攻条, 英雄2速度, 英雄2速攻条, 英雄2增减的速攻条, 英雄3速度, 英雄3速攻条, 英雄3增减的速攻条, 英雄4速度, 英雄4速攻条, 英雄4增减的速攻条, 敌人2速攻条, 敌人2增减的速攻条)
+            let 敌人3速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1增减的速攻条, 英雄2速度, 英雄2速攻条, 英雄2增减的速攻条, 英雄3速度, 英雄3速攻条, 英雄3增减的速攻条, 英雄4速度, 英雄4速攻条, 英雄4增减的速攻条, 敌人3速攻条, 敌人3增减的速攻条)
+            let 敌人4速度区间 = 合并速度区间(英雄1速度, 英雄1速攻条, 英雄1增减的速攻条, 英雄2速度, 英雄2速攻条, 英雄2增减的速攻条, 英雄3速度, 英雄3速攻条, 英雄3增减的速攻条, 英雄4速度, 英雄4速攻条, 英雄4增减的速攻条, 敌人4速攻条, 敌人4增减的速攻条)
 
-            敌人1速度.textContent = "敌人1速度：" + 敌人1速度区间[0] + "~" + 敌人1速度区间[1]
-            敌人2速度.textContent = "敌人2速度：" + 敌人2速度区间[0] + "~" + 敌人2速度区间[1]
-            敌人3速度.textContent = "敌人3速度：" + 敌人3速度区间[0] + "~" + 敌人3速度区间[1]
-            敌人4速度.textContent = "敌人4速度：" + 敌人4速度区间[0] + "~" + 敌人4速度区间[1]
+            敌人1速度.textContent = 敌人1速度区间[0] + "~" + 敌人1速度区间[1]
+            敌人2速度.textContent = 敌人2速度区间[0] + "~" + 敌人2速度区间[1]
+            敌人3速度.textContent = 敌人3速度区间[0] + "~" + 敌人3速度区间[1]
+            敌人4速度.textContent = 敌人4速度区间[0] + "~" + 敌人4速度区间[1]
         }
+
+
+        let 清空 = document.querySelector("#清空")
+        清空.addEventListener("click", () => {
+            var inputs = document.querySelectorAll("input")
+            inputs.forEach(function (e) {
+                e.value = ""
+            });
+            速度计算()
+        })
+        let 复制 = document.querySelector("#复制")
+        复制.addEventListener("click", () => {
+            let str = (敌人1速攻条.value ? 敌人1速度.textContent : "") + (敌人2速攻条.value ? "\n" + 敌人2速度.textContent : "") + (敌人3速攻条.value ? "\n" + 敌人3速度.textContent : "") + (敌人4速攻条.value ? "\n" + 敌人4速度.textContent : "")
+            navigator.clipboard.writeText(str)
+        })
     </script>
+
 </body>
 
 </html>
